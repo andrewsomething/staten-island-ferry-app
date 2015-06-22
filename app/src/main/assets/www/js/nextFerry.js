@@ -1,7 +1,4 @@
 $(function(){
-    var now = new Date();
-    var day = now.getDay();
-
     // Query params.
     var reqDay = $.url("?day");
     var reqTerm = $.url("?term");
@@ -9,18 +6,20 @@ $(function(){
 
     // Next Ferry from St. George pop-up.
     $('#next-stg-ferry').on('click', function(e){
-        var terminal = 'stg';
-        var timetable = getTimetable(terminal, day);
-        var nextFerry = getFerry(timetable, terminal);
+        var now = new Date();
+        var day = now.getDay();
+        var timetable = getTimetable('stg', day);
+        var nextFerry = getFerry(timetable, now, 'stg');
         $('#next-ferry').html("<h1>" + nextFerry + "</h1>");
     });
 
 
     // Next Ferry from Whitehall pop-up.
     $('#next-white-ferry').on('click', function(e){
-        var terminal = 'white';
-        var timetable = getTimetable(terminal, day);
-        var nextFerry = getFerry(timetable, terminal);
+        var now = new Date();
+        var day = now.getDay();
+        var timetable = getTimetable('white', day);
+        var nextFerry = getFerry(timetable, now, 'white');
         $('#next-ferry').html("<h1>" + nextFerry + "</h1>");
     });
 
@@ -121,13 +120,11 @@ $(function(){
     }
 
 
-    function getFerry (timetable, terminal){
+    function getFerry (timetable, now, terminal){
         var lastFerry = new Date();
         var ferryTime = new Date();
 
         lastFerry = setTimeObj(timetable[timetable.length-1], lastFerry);
-
-        console.log(now, lastFerry)
 
         if (now >= lastFerry && day==0) { // Sunday after last ferry.
             timetable = getTimetable(1, terminal);
@@ -192,6 +189,7 @@ $(function(){
 
 
     function printTimes(timetable){
+        var now = new Date();
         for (var i=0,j=timetable.length; i<j; i++) {
             var ferryTime = setTimeObj(timetable[i], now);
             var nextFerry = convertTime(ferryTime);
