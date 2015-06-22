@@ -1,0 +1,49 @@
+<!DOCTYPE html> 
+<html>
+    <head>
+        <script src="./js/jquery-2.1.4.min.js"></script>
+        <script src="./js/bootstrap.min.js"></script>
+        <script src="./js/url.min.js"></script>
+        <script src="./js/nextFerry.js"></script>
+        <link href="./css/paper.min.css" rel="stylesheet">
+        <link href="./css/custom.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <span class="navbar-brand"><!-- Place holder for day. --></span>
+            </div>
+          </div>
+        </nav>
+
+        <div id='whitehall-weekday' class="container-fluid">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="row">
+                    <h4 id='terminal'><!-- Place holder for terminal name. --></h4>
+                    <div class="list-group">
+                        <div class="list-group-item active">A.M.</div>
+                            <div id='am-times'>
+                            <!-- Place holder for A.M. timetable. -->
+                            </div>
+                        </div>
+                    </div>
+
+                <div class="row">
+                    <div class="list-group">
+                        <div class="list-group-item active">P.M.</div>
+                            <div id='pm-times'>
+                            <!-- Place holder for P.M. timetable. -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <a id='back-btn' type="button" class="btn btn-info btn-lg" href="index.html">
+              Back
+            </a>
+        </div>
+    </body>
+</html>

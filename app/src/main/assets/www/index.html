@@ -1,0 +1,106 @@
+<!DOCTYPE html> 
+<html>
+    <head>
+        <script src="./js/jquery-2.1.4.min.js"></script>
+        <script src="./js/bootstrap.min.js"></script>
+        <script src="./js/url.min.js"></script>
+        <script src="./js/nextFerry.js"></script>
+        <link href="./css/paper.min.css" rel="stylesheet">
+        <link href="./css/custom.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <span class="navbar-brand">Staten Island Ferry</span>
+            </div>
+          </div>
+        </nav>
+
+      <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <h4>Next Ferry:</h4>
+                <button id="next-stg-ferry" type="button" class="btn btn-lg btn-success btn-block" data-toggle="modal" data-target="#myModal">
+                  From St. George
+                </button>
+                <button id="next-white-ferry" type="button" class="btn btn-lg btn-info btn-block" data-toggle="modal" data-target="#myModal">
+                  From Whitehall
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <h4>Ferry Schedule: </h4>
+
+            <div class="list-group">
+              <div class="list-group-item active">St. George</div>
+              <a href="schedule.html?day=weekday&term=stg" class="list-group-item">
+                <strong>Weekdays</strong>
+                <span class="badge">
+                    <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+                </span>
+              </a>
+              <a href="schedule.html?day=saturday&term=stg" class="list-group-item">
+                <strong>Saturdays</strong>
+                <span class="badge">
+                    <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+                </span>
+              </a>
+              <a href="schedule.html?day=sunday&term=stg" class="list-group-item">
+                <strong>Sundays</strong>
+                <span class="badge">
+                    <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+                </span>
+              </a>
+            </div>
+
+            <div class="list-group">
+              <div class="list-group-item active">Whitehall</div>
+              <a href="schedule.html?day=weekday&term=whitehall" class="list-group-item">
+                <strong>Weekdays</strong>
+                <span class="badge">
+                    <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+                </span>
+              </a>
+              <a href="schedule.html?day=saturday&term=whitehall" class="list-group-item">
+                <strong>Saturdays</strong>
+                <span class="badge">
+                    <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+                </span>
+              </a>
+              <a href="schedule.html?day=sunday&term=whitehall" class="list-group-item">
+                <strong>Sundays</strong>
+                <span class="badge">
+                    <span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+                </span>
+              </a>
+            </div>
+
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Next Ferry</h4>
+              </div>
+              <div class="modal-body" id="next-ferry">
+<!--                <h1>12:30 AM</h1>-->
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </body>
+
+</html>
