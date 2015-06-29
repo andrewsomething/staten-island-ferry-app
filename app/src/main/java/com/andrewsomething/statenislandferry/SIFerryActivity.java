@@ -31,6 +31,12 @@ public class SIFerryActivity extends Activity {
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+        mWebView.reload();
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK) && mWebView.canGoBack()) {
             mWebView.goBack();
