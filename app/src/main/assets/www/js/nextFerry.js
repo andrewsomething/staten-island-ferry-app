@@ -3,6 +3,7 @@ $(function(){
     var reqDay = $.url("?day");
     var reqTerm = $.url("?term");
 
+
     // Next Ferry from St. George pop-up.
     $('#next-stg-ferry').on('click', function(e){
         var now = new Date();
@@ -19,6 +20,13 @@ $(function(){
         var nextFerry = getFerry(timetable, now, 'white');
         $('#next-ferry').html("<h1>" + nextFerry + "</h1>");
     });
+
+
+    if(checkHoliday(new Date())) {
+        $("#holiday-warning").css({ display: "block" });
+    } else {
+        $("#holiday-warning").css({ display: "none" });
+    }
 
 
     // Timetable page.
@@ -218,9 +226,11 @@ $(function(){
         }
     }
 
+
     function isLastMonday(d) {
         return d.getDay() === 1 && (d.getDate() + 7) > 30;
     }
+
 
     function checkHoliday(now){
         var month = now.getMonth() + 1;
