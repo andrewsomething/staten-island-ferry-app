@@ -3,12 +3,10 @@ $(function(){
     var reqDay = $.url("?day");
     var reqTerm = $.url("?term");
 
-
     // Next Ferry from St. George pop-up.
     $('#next-stg-ferry').on('click', function(e){
         var now = new Date();
-        var day = now.getDay();
-        var timetable = getTimetable('stg', day);
+        var timetable = getTimetable(now, 'stg');
         var nextFerry = getFerry(timetable, now, 'stg');
         $('#next-ferry').html("<h1>" + nextFerry + "</h1>");
     });
@@ -17,8 +15,7 @@ $(function(){
     // Next Ferry from Whitehall pop-up.
     $('#next-white-ferry').on('click', function(e){
         var now = new Date();
-        var day = now.getDay();
-        var timetable = getTimetable('white', day);
+        var timetable = getTimetable(now, 'white');
         var nextFerry = getFerry(timetable, now, 'white');
         $('#next-ferry').html("<h1>" + nextFerry + "</h1>");
     });
@@ -34,20 +31,26 @@ $(function(){
 
         if (reqDay == "weekday") {
             $('.navbar-brand').html("Weekdays");
-            var timetable = getTimetable(reqTerm, 2);
+            var timetable = getTimetable(2, reqTerm);
         } else if (reqDay == "sunday") {
             $('.navbar-brand').html("Sundays");
-            var timetable = getTimetable(reqTerm, 0);
+            var timetable = getTimetable(0, reqTerm);
         } else {
             $('.navbar-brand').html("Saturdays");
-            var timetable = getTimetable(reqTerm, 6);
+            var timetable = getTimetable(6, reqTerm);
         };
 
         printTimes(timetable);
     }
 
 
-    function getTimetable(terminal, day){
+    function getTimetable(now, terminal){
+        if (typeof now != "number") {
+            var day = now.getDay();
+            var holiday = checkHoliday(now);
+        } else {
+            var day = now;
+        }
         if (terminal=='stg'){
             /*Weekdays from St. George Terminal*/
             var weekTimetable = ['00:00', '00:30', '1:00', '2:00', '3:00', '4:00',
@@ -76,9 +79,14 @@ $(function(){
                 '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30',
                 '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00',
                 '22:30', '23:00', '23:30'];
-        }
 
-        else {
+            var holidayTimetable = ['00:00', '1:00', '2:00', '3:00', '4:00', '5:00',
+                '6:00', '7:00', '7:30', '8:00', '8:30', '9:00', '9:30', '10:00',
+                '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30',
+                '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00',
+                '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30',
+                '21:00', '21:30', '22:00', '22:30', '23:00', '23:30'];
+        } else {
             /*Weekdays from Whitehall Terminal*/
             var weekTimetable = ['00:00', '00:30', '1:00', '1:30', '2:30',
                 '3:30', '4:30', '5:30', '6:00', '6:30', '6:50', '7:10', '7:30',
@@ -106,9 +114,18 @@ $(function(){
                 '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30',
                 '19:00', '19:30', '20:00', '20:30', '21:00', '21:30', '22:00',
                 '22:30', '23:00', '23:30'];
+
+            var holidayTimetable = ['00:30', '1:30', '2:30', '3:30', '4:30', '5:30',
+                '6:30', '7:00', '7:30', '8:00', '8:30', '9:00', '9:30', '10:00',
+                '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30',
+                '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00',
+                '17:30', '18:00', '18:30', '19:00', '19:30', '20:00', '20:30',
+                '21:00', '21:30', '22:00', '22:30', '23:00', '23:30'];
         }
 
-        if (day==0){
+        if (holiday) {
+            var timetable = holidayTimetable;
+        } else if (day==0){
             var timetable = sunTimetable;
         } else if (day==6){
             var timetable = satTimetable;
@@ -121,23 +138,20 @@ $(function(){
 
 
     function getFerry (timetable, now, terminal){
-        var lastFerry = new Date();
-        var ferryTime = new Date();
-
+        var day = now.getDay();
+        var ferryTime = new Date(now);
+        var lastFerry = new Date(now);
         lastFerry = setTimeObj(timetable[timetable.length-1], lastFerry);
 
         if (now >= lastFerry && day==0) { // Sunday after last ferry.
-            timetable = getTimetable(1, terminal);
             ferryTime = setTimeObj(timetable[0], ferryTime);
             nextFerry = convertTime(ferryTime);
             return nextFerry;
         } else if (now >= lastFerry && day==5) { // Friday after last ferry.
-            timetable = getTimetable(6, terminal);
             ferryTime = setTimeObj(timetable[0], ferryTime);
             nextFerry = convertTime(ferryTime);
             return nextFerry;
         } else if (now >= lastFerry && day==6){ // Saturday after last ferry.
-            timetable = getTimetable(0, terminal);
             ferryTime = setTimeObj(timetable[0], ferryTime);
             nextFerry = convertTime(ferryTime);
             return nextFerry;
@@ -202,5 +216,34 @@ $(function(){
                 $("#pm-times").append(listItem);
             }
         }
+    }
+
+    function isLastMonday(d) {
+        return d.getDay() === 1 && (d.getDate() + 7) > 30;
+    }
+
+    function checkHoliday(now){
+        var month = now.getMonth() + 1;
+        var date = now.getDate();
+        var day = now.getDay()
+        var dateString = month + "/" + date;
+
+        if (dateString == "1/1"      // New Year's
+            || dateString == "7/4"   // Independence Day
+            || dateString == "12/25" // Christmas Day
+        ) return true;
+
+        // Check holidays that are the "Nth" of the Month
+        var nthOfMonth = Math.floor((date - 1) / 7) + 1;
+        var tuple =  month + "/" + nthOfMonth + "/" + day;
+
+        if (tuple == "2/3/1"     // President's Day
+            || tuple == "9/1/1"  // Labor Day
+            || tuple == "11/4/4" // Thanksgiving Day
+        ) return true;
+
+        if (month == 5 && isLastMonday(now)) return true
+
+        return false
     }
 });
